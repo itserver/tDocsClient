@@ -2,11 +2,13 @@ package com.indizen.tdocs.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 
@@ -40,7 +42,10 @@ public final class HTTP {
 	        }
 	        if(code < HttpURLConnection.HTTP_BAD_REQUEST)
 	        {
-	        	in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	        	InputStream inStream = connection.getInputStream();
+	        	Charset charset = Charset.forName("UTF-8");
+	        	InputStreamReader inStreamReader = new InputStreamReader(inStream, charset);
+	        	in = new BufferedReader(inStreamReader);
 	        	String line;
 	        	while ((line = in.readLine()) != null) {
 	        		sb.append(line).append("\n");
